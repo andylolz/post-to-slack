@@ -5,6 +5,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: LoveToKnow/slackify-markdown-action@v1.1.1
+      id: slackify-markdown
+      with:
+        text: "[Overlook Hotel](https://example.com) \n :star: \n Doors had too many axe holes, guest in room 237 was far too rowdy, whole place felt stuck in the 1920s."
     - name: Post a message in a channel
       uses: slackapi/slack-github-action@v2.0.0
       with:
@@ -20,7 +24,7 @@ jobs:
             - type: "section"
               text:
                 type: "mrkdwn"
-                text: "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes, guest in room 237 was far too rowdy, whole place felt stuck in the 1920s."
+                text: "${{ steps.slackify-markdown.outputs.text }}"
               accessory:
                 type: "image"
                 image_url: "https://is5-ssl.mzstatic.com/image/thumb/Purple3/v4/d3/72/5c/d3725c8f-c642-5d69-1904-aa36e4297885/source/256x256bb.jpg"
