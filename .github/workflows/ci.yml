@@ -22,6 +22,10 @@ jobs:
                 text:
                   type: mrkdwn
                   text: "Here is some text"
+                accessory:
+                  type: "image"
+                  image_url: "${{ github.event.sender.avatar_url }}"
+                  alt_text: "${{ github.event.sender.login }}"
 
               - type: actions
                 elements:
