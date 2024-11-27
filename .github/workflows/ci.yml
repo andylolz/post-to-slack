@@ -5,32 +5,52 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: LoveToKnow/slackify-markdown-action@v1.1.1
-      id: slackify-markdown
-      with:
-        text: "[Overlook Hotel](https://example.com) \n :star: \n Doors had too many axe holes, guest in room 237 was far too rowdy, whole place felt stuck in the 1920s."
-    - name: Post a message in a channel
-      uses: slackapi/slack-github-action@v2.0.0
-      with:
-        webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-        webhook-type: incoming-webhook
-        payload: |
-          blocks:
-            - type: "section"
-              text:
-                type: "mrkdwn"
-                text: "Danny Torrence left the following review for your property:"
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
 
-            - type: "section"
-              text:
-                type: "mrkdwn"
-                text: "${{ steps.slackify-markdown.outputs.text }}"
-              accessory:
-                type: "image"
-                image_url: "https://is5-ssl.mzstatic.com/image/thumb/Purple3/v4/d3/72/5c/d3725c8f-c642-5d69-1904-aa36e4297885/source/256x256bb.jpg"
-                alt_text: "Haunted hotel image"
+      # - uses: slackapi/slack-github-action@v2
+      #   with:
+      #     method: chat.postMessage
+      #     token: ${{ secrets.SLACK_BOT_TOKEN }}
+      #     payload: |
+      #       channel: C082H8H08EA
+      #       blocks:
+      #         - type: section
+      #           text:
+      #             type: mrkdwn
+      #             text: "Here is some text"
 
-            - type: "section"
-              text:
-                type: "mrkdwn"
-                text: "*Average Rating*\n1.0"
+      #         - type: section
+      #           text:
+      #             type: mrkdwn
+      #             text: "${{ steps.slackify-markdown.outputs.text }}"
+
+      #         - type: actions
+      #           elements:
+      #           - type: button
+      #             text:
+      #               type: "plain_text"
+      #               text: "View build"
+      #             url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
