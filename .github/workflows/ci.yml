@@ -1,5 +1,6 @@
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -9,48 +10,23 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo "$RUNNER_CONTEXT"
-      - name: Dump strategy context
-        env:
-          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-        run: echo "$STRATEGY_CONTEXT"
-      - name: Dump matrix context
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-        run: echo "$MATRIX_CONTEXT"
 
-      # - uses: slackapi/slack-github-action@v2
-      #   with:
-      #     method: chat.postMessage
-      #     token: ${{ secrets.SLACK_BOT_TOKEN }}
-      #     payload: |
-      #       channel: C082H8H08EA
-      #       blocks:
-      #         - type: section
-      #           text:
-      #             type: mrkdwn
-      #             text: "Here is some text"
+      - uses: slackapi/slack-github-action@v2
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: C082H8H08EA
+            blocks:
+              - type: section
+                text:
+                  type: mrkdwn
+                  text: "Here is some text"
 
-      #         - type: section
-      #           text:
-      #             type: mrkdwn
-      #             text: "${{ steps.slackify-markdown.outputs.text }}"
-
-      #         - type: actions
-      #           elements:
-      #           - type: button
-      #             text:
-      #               type: "plain_text"
-      #               text: "View build"
-      #             url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              - type: actions
+                elements:
+                - type: button
+                  text:
+                    type: "plain_text"
+                    text: "View build"
+                  url: "https://google.com"
